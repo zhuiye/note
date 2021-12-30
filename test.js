@@ -775,3 +775,142 @@ function isBFS(nums) {
 
   return recur(0, nums.length - 1);
 }
+
+// function test(nums,size){
+
+//   return nums[]+test(nums,size--)
+// }
+
+function halfSearch(nums, target) {
+  let left = 0;
+  let right = nums.length - 1;
+
+  while (left <= right) {
+    let mid = (left + right) >> 1;
+    if (nums[mid] > target) {
+      right = mid - 1;
+    } else if (nums[mid] < target) {
+      left = mid + 1;
+    } else {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/*
+ int n = nums.size();
+        vector<int> cnt(n + 1);
+        for (int num : nums)
+            cnt[min(num, n)]++;
+        for (int i = n; i >= 0; --i) {
+            if (i < n)
+                cnt[i] += cnt[i + 1];
+            if (cnt[i] == i)
+                return i;
+        }
+        return -1;
+*/
+
+function specialArray(nums) {
+  let n = nums.length;
+  let count = new Array(n + 1).fill(0);
+
+  for (let num of nums) {
+    // console.log(Math.min(num, n));
+    count[Math.min(num, n)]++;
+  }
+  // console.log(count);
+  for (let i = n; i >= 0; i--) {
+    if (i < n) count[i] += count[i + 1];
+    console.log(i);
+    if (count[i] == i) return i;
+  }
+  return -1;
+}
+
+// specialArray([0, 4, 3, 0, 4]);
+
+/*
+
+
+       
+
+        
+      
+*/
+function isSubsequence(s, t) {
+  let n = s.length,
+    m = t.length;
+  let f = [];
+
+  for (let i = 0; i <= m; i++) {
+    f[i] = new Array(26).fill(0);
+  }
+
+  for (let i = 0; i < 26; i++) {
+    f[m][i] = m;
+  }
+
+  for (let i = m - 1; i >= 0; i--) {
+    for (let j = 0; j < 26; j++) {
+      if (t[i].charCodeAt(0) == j + "a".charCodeAt(0)) f[i][j] = i;
+      else f[i][j] = f[i + 1][j];
+    }
+  }
+
+  console.log(f);
+
+  let add = 0;
+  for (let i = 0; i < n; i++) {
+    if (f[add][s[i].charCodeAt(0) - "a".charCodeAt(0)] == m) {
+      return false;
+    }
+
+    console.log(s[i].charCodeAt(0) - "a".charCodeAt(0));
+    add = f[add][s[i].charCodeAt(0) - "a".charCodeAt(0)] + 1;
+  }
+  return true;
+}
+
+// console.log(isSubsequence("adz", "aazbdz"));
+
+function buildArray(nums) {
+  for (let i = 0; i < nums.length; i++) {
+    nums[i] = nums[i] + 1000 * (nums[nums[i]] % 1000);
+    console.log(nums[i]);
+  }
+}
+
+// buildArray([0, 2, 1]);
+
+function getFrequentNumber(nums) {
+  let result = [];
+
+  let base,
+    count,
+    maxCount = 0;
+
+  const update = (number) => {
+    if (number != base) count = 1;
+    else count++;
+
+    if (count == maxCount) result.push(number);
+
+    if (count > maxCount) {
+      result = [number];
+      maxCount = count;
+    }
+    base = number;
+  };
+
+  for (let i = 0; i < nums.length; i++) {
+    update(nums[i]);
+  }
+
+  console.log(result);
+}
+
+getFrequentNumber([1, 1, 2, 2, 3, 3, 3]);
+getFrequentNumber([1, 2, 3]);
